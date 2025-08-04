@@ -33,7 +33,7 @@ primary:
     log_statement = 'all'
 
 readReplicas:
-  replicaCount: 1
+  replicaCount: 2
   persistence:
     size: 4Gi
   resourcesPreset: medium
