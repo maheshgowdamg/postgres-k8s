@@ -1,0 +1,51 @@
+architecture: replication
+
+replication:
+  enabled: true
+  synchronousCommit: "off"
+  numSynchronousReplicas: 0
+
+metrics:
+  enabled: true
+
+global:
+  storageClass: local-path
+  postgresql:
+    auth:
+      database: postgres
+      existingSecret: postgresql
+
+primary:
+  persistence:
+    size: 4Gi
+  resourcesPreset: medium 
+  extendedConfiguration: |
+    max_connections = 3001
+    shared_preload_libraries = 'pg_stat_statements'
+    pg_stat_statements.track = all
+    log_destination = 'stderr'
+    logging_collector = on
+    log_directory = '/bitnami/postgresql/logs'
+    log_filename = 'postgresql.log'
+    log_connections = off
+    log_disconnections = off
+    log_min_duration_statement = 1000
+    log_statement = 'all'
+
+readReplicas:
+  replicaCount: 2
+  persistence:
+    size: 4Gi
+  resourcesPreset: medium
+  extendedConfiguration: |
+    max_connections = 3001
+    shared_preload_libraries = 'pg_stat_statements'
+    pg_stat_statements.track = all
+    log_destination = 'stderr'
+    logging_collector = on
+    log_directory = '/bitnami/postgresql/logs'
+    log_filename = 'postgresql.log'
+    log_connections = off
+    log_disconnections = off
+    log_min_duration_statement = 1000
+    log_statement = 'all'
